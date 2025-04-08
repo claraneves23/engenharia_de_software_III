@@ -134,7 +134,7 @@ O GitHub é uma plataforma de hospedagem de código fonte para projetos de softw
 - **Workshops de Grupos (JAD ou Similar)**: sessões facilitadas onde grupos de stakeholders se reúnem para discutir e definir requisitos colaborativamente.
 - **Estudo dos Documentos**: análise de documentação existente como manuais de processos, requisitos antigos, políticas organizacionais, etc.
 - **Análise de Estatísticas**: utilização de dados estatísticos históricos para identificar padrões e requisitos baseados em tendências observadas.
-- **Técnicas de Amostragem: coleta de dados de uma amostra representativa para inferir requisitos de todo o sistema.
+- **Técnicas de Amostragem**: coleta de dados de uma amostra representativa para inferir requisitos de todo o sistema.
 - **Observação In Loco dos Processos**: observação direta dos processos de negócio no ambiente de trabalho para identificar necessidades e problemas.
 - **Questionários**: questionários estruturados enviados para stakeholders para coletar informações e opiniões sobre o sistema.
 - **Exame dos Registros Existentes**: revisão de registros logs e relatórios do sistema atual para identificar áreas problemáticas e necessidades não atendidas.
@@ -215,7 +215,7 @@ Requisitos representam diferentes coisas para diferentes participantes do proces
 #### Cerimônias SCRUM
 - **Sprint Planning**: Definição do que será desenvolvido na sprint.
 - **Sprint Retrospective**: Avaliação do processo para melhoria contínua.
-- **Daily Scrum**: Reunião diária de 15 minutos para sincronização da equipe.
+- **Daily Scrum**: Reunião diária de 15 minutos para sincronização da equipe. 
 - **Sprint Review**: Demonstração do incremento desenvolvido para stakeholders.
 
 #### SCRUM vs. Cascata
