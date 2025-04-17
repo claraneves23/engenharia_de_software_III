@@ -240,11 +240,61 @@ Requisitos representam diferentes coisas para diferentes participantes do proces
 
 ### Design Pattern
 
-#### Singleton
-- Design pattern criacional
-- Apenas uma instância do seu tipo existe e provém um único ponto de acesso a ela.
-- Permite acessar um objeto de qualquer lugar na sua aplicação.
-- Garante que somente uma única instância dessa classe estará disponível a qualquer momento.
+### Singleton
+O **Singleton** é um padrão de projeto **criacional**, utilizado para garantir que uma classe tenha **apenas uma instância** ao longo de toda a execução da aplicação e que forneça um **ponto global de acesso** a essa instância.
 
-  
+#### Características principais
+
+- Garante que **somente uma instância** de uma classe estará disponível em qualquer momento.
+- Oferece um **ponto centralizado de acesso**, facilitando o controle e a manutenção.
+- Possibilita o **acesso global** ao objeto instanciado, útil para funcionalidades como gerenciamento de configurações, logs ou conexões com banco de dados.
+- Evita erros relacionados à criação de múltiplas instâncias desnecessárias.
+- Possui **acesso mais rápido** à instância após a criação.
+
+#### Lazy Initialization
+
+O Singleton muitas vezes é implementado com o uso de **Lazy Initialization**, uma técnica em que o objeto **só é instanciado no momento em que for realmente necessário**. Isso otimiza o uso de recursos, principalmente quando a criação do objeto é custosa.
+
+#### Exemplo em Java
+
+```java
+public class Singleton {
+  private static Singleton instance;
+  private String data;
+
+  // Construtor privado impede instâncias externas
+  private Singleton(String data) {
+      this.data = data;
+  }
+
+  // Método de acesso à instância (lazy initialization)
+  public static Singleton getInstance(String data) {
+      if (instance == null) {
+          instance = new Singleton(data);
+      }
+      return instance;
+  }
+
+  public String getData() {
+      return data;
+  }
+}
+```
+
+##### Explicação do código:
+
+- `private static Singleton instance;`  
+  Armazena a **única instância** da classe.
+
+- `private Singleton(String data);`  
+  Construtor privado impede a criação de objetos fora da classe.
+
+- `public static Singleton getInstance(String data);`  
+  Cria a instância **somente se ainda não existir** e a retorna. Essa é a implementação do **Lazy Initialization**.
+
+####  Quando usar?
+
+- Quando é necessário garantir que **apenas uma instância** de uma classe seja usada.
+- Quando se precisa de **acesso global** ao mesmo objeto.
+- Exemplos comuns: **loggers**, **gerenciadores de configuração**, **conexões com banco de dados**.
 
