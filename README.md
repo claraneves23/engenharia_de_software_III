@@ -236,8 +236,15 @@ Requisitos representam diferentes coisas para diferentes participantes do proces
 - **Qualidade Elevada**: Testes contínuos e feedback frequente melhoram o produto.
 - **Redução de Riscos**: Problemas são identificados e resolvidos precocemente no processo.
   
-  
+## Aula 05
 
+### Design Pattern
+
+#### Singleton
+- Design pattern criacional
+- Apenas uma instância do seu tipo existe e provém um único ponto de acesso a ela.
+- Permite acessar um objeto de qualquer lugar na sua aplicação.
+- Garante que somente uma única instância dessa classe estará disponível a qualquer momento.
 
   
 
