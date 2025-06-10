@@ -298,3 +298,420 @@ public class Singleton {
 - Quando se precisa de **acesso global** ao mesmo objeto.
 - Exemplos comuns: **loggers**, **gerenciadores de configuração**, **conexões com banco de dados**.
 
+## Aula 06
+
+### Facade
+
+- Objetivo
+Fornecer uma interface única e simplificada para um conjunto de classes complexas.
+
+- Motivação
+Você tem várias classes que realizam tarefas específicas (ex: CPU, Disco, Memória), mas o usuário quer uma forma fácil de interagir com todas essas partes sem saber como elas funcionam.
+
+**Estrutura**
+
+- Classes do subsistema com lógicas específicas.
+- Uma classe fachada que encapsula e coordena as chamadas ao subsistema.
+
+```java
+class CPU {
+    void iniciar() { System.out.println("CPU iniciada"); }
+}
+
+class Memoria {
+    void carregar() { System.out.println("Memória carregada"); }
+}
+
+class Disco {
+    void ler() { System.out.println("Disco lendo dados"); }
+}
+
+public class ComputadorFacade {
+    private CPU cpu;
+    private Memoria memoria;
+    private Disco disco;
+
+    public ComputadorFacade() {
+        this.cpu = new CPU();
+        this.memoria = new Memoria();
+        this.disco = new Disco();
+    }
+
+    public void ligarComputador() {
+        cpu.iniciar();
+        memoria.carregar();
+        disco.ler();
+    }
+}
+
+```
+
+## Aula 07
+
+### Strategy
+
+- Objetivo
+Definir uma família de algoritmos encapsulados e torná-los intercambiáveis em tempo de execução.
+
+-  Motivação
+Imagine que você tem um robô e quer que ele possa se mover de diferentes formas, dependendo da situação (modo rápido, modo furtivo, etc.). Com Strategy, você pode trocar o algoritmo sem alterar a classe principal.
+
+```java
+package src;
+
+public class Disciplina {
+     private String nome, situacao;
+     private double p1, p2, media;
+     private iMediaStrategy estrategia;
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getSituacao() {
+        return situacao;
+    }
+
+    public double getP1() {
+        return p1;
+    }
+
+    public void setP1(double p1) {
+        this.p1 = p1;
+    }
+
+    public double getP2() {
+        return p2;
+    }
+
+    public void setP2(double p2) {
+        this.p2 = p2;
+    }
+
+    public double getMedia() {
+        return media;
+    }
+
+
+    public Disciplina(iMediaStrategy estrategia){
+         this.estrategia = estrategia;
+    }
+
+    public void calcularMedia(){
+       media= estrategia.calcularMedia(p1,p2);
+       situacao = estrategia.verificarSituacao(media);
+    }
+
+}
+```
+
+```java
+package src;
+
+public interface iMediaStrategy {
+    double calcularMedia( double a, double b);
+    String verificarSituacao(double media);
+
+}
+```
+
+```java
+package src;
+
+public class Aritmetica implements iMediaStrategy{
+    @Override
+    public double calcularMedia(double a, double b) {
+        return (a+b)/2;
+    }
+
+    @Override
+    public String verificarSituacao(double media) {
+        if (media>= 5)
+            return "Aprovado";
+        else
+            return "Reprovado";
+    }
+}
+```
+
+```java
+package src;
+
+public class Geometrica implements iMediaStrategy{
+    @Override
+    public double calcularMedia(double a, double b) {
+        return  Math.sqrt(a*b);
+    }
+
+    @Override
+    public String verificarSituacao(double media) {
+        if(media >= 7)
+            return "Aprovado";
+        else
+            return "Reprovado";
+    }
+}
+```
+
+```java
+package src;
+
+public class Main {
+        public static void main(String[] args) {
+            iMediaStrategy estrategia = new Aritmetica();      // troque por new Geometrica()
+            Disciplina d = new Disciplina(estrategia);
+
+            d.setNome("Padrões de Desenvolvimento");
+            d.setP1(10);
+            d.setP2(5);
+            d.calcularMedia();
+
+            System.out.printf("P1: %.2f  P2: %.2f  Média: %.2f  Situação: %s%n",
+                    d.getP1(), d.getP2(), d.getMedia(), d.getSituacao());
+        }
+}
+```
+
+## Aula 08
+
+### Teste de Software
+
+#### 📌 Definição
+> Teste é qualquer atividade que busca avaliar atributos ou capacidades de um sistema e verificar se os resultados atendem às expectativas.
+
+---
+
+#### 📖 Princípios do Teste
+
+- **Revela a presença de defeitos, não sua ausência**
+- **Teste 100% completo é impossível**
+- **Teste deve ser antecipado e contínuo**
+- **Defeitos se concentram em poucos módulos**
+- **Paradoxo do pesticida**: testes precisam ser atualizados
+- **Contexto influencia o processo de teste**
+- **Deve atender às necessidades do cliente/usuário**
+- **Teste é iterativo**
+- **Automação é útil quando adequada**
+- **Documentação e rastreabilidade são essenciais**
+
+---
+
+#### 🧪 Tipos de Testes
+
+##### 🔧 Teste de Configuração ou Instalação
+- Verifica o funcionamento em diferentes ambientes de hardware/software.
+- Ex: Testar com pouca memória ou falha de rede.
+
+##### 🧱 Teste de Integridade
+- Avalia resistência a falhas e consistência de dados.
+- Ex: Tabela com milhões de registros.
+
+##### 🔐 Teste de Segurança
+- Busca identificar vulnerabilidades e garantir acesso seguro.
+- Ex: Resistência a ataques de força bruta.
+
+##### ⚙️ Teste Funcional
+- Verifica se os requisitos funcionais estão sendo atendidos.
+- Ex: Atualização de perfil.
+
+#####🧩 Teste de Unidade
+- Testa componentes isoladamente (funções, métodos).
+- Ex: Passar valores inválidos para uma função.
+
+##### 🔗 Teste de Integração
+- Testa a comunicação entre componentes.
+- Ex: Login conectado ao banco de dados.
+
+##### ⚡ Teste de Performance
+- Avalia a resposta do sistema sob diferentes condições.
+  - **Carga:** uso normal
+  - **Stress:** uso extremo
+  - **Estabilidade:** uso prolongado
+- Ex: Milhares de usuários simultâneos.
+
+##### 👤 Teste de Usabilidade
+- Avalia a experiência do usuário e a interface.
+- Ex: Posição intuitiva dos botões.
+
+##### ♿ Teste de Acessibilidade
+- Garante o uso por pessoas com deficiências.
+- Ex: Navegação com leitores de tela.
+
+##### 🔁 Teste de Regressão
+- Garante que funcionalidades antigas ainda funcionam após mudanças.
+- Ex: Revalidar funcionalidades após nova feature.
+
+---
+
+#### ⚪ Tipos de Teste por Acesso
+
+##### 🧠 Teste de Caixa Branca
+- Analista tem acesso ao código.
+- Avalia a estrutura interna e permite testes precisos e focados.
+
+##### 🕶️ Teste de Caixa Preta
+- Analista não tem acesso ao código.
+- Baseado nos requisitos funcionais.
+- Ex: Campos obrigatórios não validados, botões sem ação.
+
+---
+
+# 🧪 Test Driven Development (TDD)
+
+## 📌 O que é TDD?
+- Metodologia onde os **testes são escritos antes da implementação**
+- Cada teste funciona como uma **especificação executável**
+- Processo **iterativo** com feedback constante
+
+---
+
+## 🎯 Objetivos de Aprendizagem
+- Compreender o ciclo Red–Green–Refactor
+- Dominar o fluxo do TDD
+- Configurar ambiente com JUnit 5 / XUnit
+- Aplicar TDD com exemplo prático (calculadora)
+- Conhecer boas práticas e armadilhas comuns
+
+---
+
+## ✅ Benefícios do TDD
+- **Redução de defeitos**
+- **Feedback rápido**
+- **Documentação viva**
+- **Design orientado a requisitos**
+- **Alta coesão e baixo acoplamento**
+
+---
+
+## 🔄 Ciclo Red – Green – Refactor
+
+1. **Red**: Escreve teste que falha (define o requisito)
+2. **Green**: Implementa código mínimo para passar o teste
+3. **Refactor**: Refatora mantendo os testes funcionando
+
+---
+
+## ⚙️ Anatomia AAA de um Teste Unitário
+
+- **Arrange**: Configura contexto e dados
+- **Act**: Executa a operação testada
+- **Assert**: Verifica se o resultado está correto
+
+---
+
+## 🔧 JUnit 5 – Anotações Essenciais
+
+- `@Test`: Define método de teste
+- `@BeforeEach`: Executa antes de cada teste
+- `@AfterEach`: Executa após cada teste
+- `@ParameterizedTest`: Permite múltiplos parâmetros
+- `Assertions.*`: Métodos para validação (`assertEquals`, `assertThrows`)
+
+---
+
+## ✅ Boas Práticas
+
+- Nome descritivo: `metodo_cenario_resultado`
+- Preferir um `assert` por teste
+- Testar **valores limítrofes**
+- **Evitar dependência entre testes**
+
+---
+
+## 🧼 Resumo Final
+
+- TDD leva a um **design limpo e testável**
+- Feedback contínuo por meio do ciclo Red–Green–Refactor
+- Ferramentas: **JUnit + IntelliJ (Java)** ou **XUnit + Visual Studio (C#)**
+
+
+# 🏛️ Arquitetura MVC – Visão Geral
+
+## 📌 Definição
+- MVC = Model–View–Controller
+- Separação de responsabilidades
+- Proposto por **Trygve Reenskaug (1979)**
+
+---
+
+## ✅ Por que usar MVC?
+
+- **Reduz acoplamento**
+- **Permite trabalhos paralelos** (UI, lógica, controle)
+- **Melhora testabilidade** (Model/Controller testáveis sem View)
+- **Facilita evolução da interface** (Web, Mobile, CLI)
+
+---
+
+## 🔍 Componentes do MVC
+
+### 🧠 Model
+- Representa o **domínio da aplicação**
+- Contém entidades, lógica de negócio e regras
+- Mantém estado e **notifica mudanças à View**
+
+### 👁️ View
+- Responsável pela **apresentação**
+- Exibe dados e coleta entrada do usuário
+- **Sem lógica de negócio**
+- Pode assumir várias formas: página, gráfico, API
+
+### 🎮 Controller
+- Intermediário entre **View e Model**
+- Processa entradas do usuário (ex: HTTP)
+- Define fluxo da aplicação
+- Exemplo: `EmpréstimoController`
+
+---
+
+## 🔁 Ciclo de Interação
+
+1. Usuário interage com a **View**
+2. **Controller** interpreta e aciona o **Model**
+3. **Model** altera o estado e emite evento
+4. **View** atualiza a interface
+
+---
+
+## ⚖️ Benefícios e Desafios
+
+### ✅ Benefícios:
+- Separação clara
+- Reutilização de código
+- Testabilidade
+
+### ❌ Desafios:
+- Complexidade extra
+- Gerência de dependências
+- Overhead em projetos pequenos
+
+---
+
+## 🔄 Padrões Relacionados
+
+- **MVC**: Base principal
+- **MVP**: Presenter atualiza View diretamente
+- **MVVM**: Data binding bidirecional
+- Extensões: HMVC, PAC, Clean Architecture
+
+---
+
+## 🧩 Aplicações Reais
+
+- **Web**: Spring MVC, ASP.NET MVC, Rails
+- **Mobile**: SwiftUI + ViewModel
+- **Desktop**: Qt, JavaFX
+- Exemplo: E-commerce
+  - Model: Carrinho
+  - View: Página
+  - Controller: Gerencia ações
+
+---
+
+
+
+
